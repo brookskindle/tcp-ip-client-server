@@ -13,11 +13,14 @@ debug: all
 
 all: client server
 
-client: client.c
+client: client.c commands.o
 	$(CC) client.c $(CFLAGS) -o $(CLIENTEXE)
 
-server: server.c
+server: server.c commands.o
 	$(CC) server.c $(CFLAGS) -o $(SERVEREXE)
+
+commands.o: commands.h commands.c
+	$(CC) -c commands.c $(CFLAGS)
 
 clean:
 	rm -rf *.o $(CLIENTEXE) $(SERVEREXE)

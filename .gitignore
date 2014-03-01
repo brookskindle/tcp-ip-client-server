@@ -1,2 +1,7 @@
 *.swp
+*.o
+*~
+*.~
+client
+server
 pre/
