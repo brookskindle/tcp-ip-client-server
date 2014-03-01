@@ -140,13 +140,49 @@ main(int argc, char *argv[])
 /*
 	example of server side 'get'
 	
-	//cmd should contain 'get if here
+	//cmd should contain 'get' if here
 	
 	char *filename = strtok(NULL," ");
 	
+	if (filename == NULL)
+	{
+		printf("invalid file name");
+	}else
+	{
+		struct stat info;
+		int c = stat(filename, &info);
+		if(c == -1)
+		{
+			printf("file does not exist");
+			n = write(newsock, "file does not exist", MAX); 
+			//return or break??
+		}else
+		{
+			// this might cause an error since info.st_size is not a char *????
+			n = write(newsock, info.st_size, MAX);
+			
+			
+			// start to write the file to the buffer
+			int fid = open(filename, O_RONLY);
+			if(fid != -1)
+			{
+				// I wonder if 'n' should be changed to a local variable for this segement
+				char buf[MAX];
+				while(n=read(fd, buf, MAX))
+				{
+					n = write(newsock, buf, MAX); 
+				}
+				
+				close(fid);
+			}else
+				printf("error opening file");
+		}
+		
+	}
 	
 			
 
 
 */
 
+			
