@@ -105,6 +105,9 @@ main(int argc, char *argv[])
 
      // Processing loop
      while(1){
+     
+     
+     //This is where the server begins to read in the message from Client
        n = read(newsock, line, MAX);
        if (n==0){
            printf("server: client died, server loops\n");
@@ -114,15 +117,36 @@ main(int argc, char *argv[])
       
       // show the line string
       printf("server: read  n=%d bytes; line=[%s]\n", n, line);
-
+  
+/*    
+	  //Lines 122 - 125 should be replaced with the actual execution of command segment, then writing to the appropriate socket. 
       strcat(line, " ECHO");
-
       // send the echo line to client 
       n = write(newsock, line, MAX);
+*/
+
+	char * cmd  = strok(line, " ");
+	
+	if(cmd == NULL)
+		printf("invalid command");
 
       printf("server: wrote n=%d bytes; ECHO=[%s]\n", n, line);
       printf("server: ready for next request\n");
     }
  }
 }
+
+
+/*
+	example of server side 'get'
+	
+	//cmd should contain 'get if here
+	
+	char *filename = strtok(NULL," ");
+	
+	
+			
+
+
+*/
 

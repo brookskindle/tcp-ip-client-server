@@ -84,14 +84,88 @@ main(int argc, char *argv[ ])
     if (line[0]==0)                  // exit if NULL line
        exit(0);
 
-    // Send ENTIRE line to server
-    n = write(sock, line, MAX);
-    printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
+    // Catch for local commands should be here.
+    
+	char* someTok = strtok(line, " ");
+	// line should be the command
+	
+	if(someTok == NULL)
+		printf("error Tokenizing");	
+	else if ( (strcmp( someTok, "lls") == 0) ||
+		   	    (strcmp( someTok, "lcat") == 0) ||
+		 	    (strcmp( someTok, "lpwd") == 0) ||
+				(strcmp( someTok, "lcd") == 0) ||
+				(strcmp( someTok, "lmkdir") == 0) ||
+				(strcmp( someTok, "lrmdir") == 0) ||
+				(strcmp( someTok, "lrm") == 0) )
+	{
+		//execute "line"  (which is determined to be local command) right here
+	
+	}else 
+	{
+		//else send "line" to server
+		
+		
+		
+		// Send ENTIRE line to server
+		 n = write(sock, line, MAX);
+		 printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
 
-    // Read a line from sock and show it
-    n = read(sock, ans, MAX);
-    printf("client: read  n=%d bytes; echo=(%s)\n",n, ans);
-  }
+		 // Read a line from sock and show it
+		 n = read(sock, ans, MAX);
+		 printf("client: read  n=%d bytes; echo=(%s)\n",n, ans);
+
+	}
+	
+    	
+    }
 }
 
+/*
+	example of GET on client side
+	
+	if( strcmp(someTok, get))
+	{
+		 n = write(sock, line, MAX);
+		 printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
+		 
+		 n = read(sock, ans, MAX);
+		 printf("client: read  n=%d bytes; echo=(%s)\n",n, ans);
+		 
+		 // look into ans for reply of server
+		 if( ans == -1) 
+		 {
+		 	//do nothing, maybe break
+		 
+		 }else
+		 {
+		 	//command is good
+		 	// this means 'ans' should contain the size of the file to be read in
+		 	
+		 	count = 0 ;
+		 	char* filename = strtok(NULL, " ");
+		 	if( filename == NULL)
+		 	{
+		 		printf(" invalid file name");
+		 	}else
+		 	{
+		 		int fid = open(filename, O_WRONLY | O_CREAT);
+		 		while( count < ans) 
+		 		{
+		 			n = read(socket,buf, MAX);
+		 			count += n;
+		 			write(fid, n, MAX);
+		 		}
+		 		close(fid);
+		 	}
+		 }
+		 
+	}	
+
+*/
+
+
+/*
+	example of 'put' 
+*/
 
