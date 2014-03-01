@@ -15,6 +15,8 @@
 #include <unistd.h> //for rmdir, unlink
 #include <time.h> //for ctime
 #include <stdio.h> //for fopen
+#include "localCommands.h"
+#include "remoteCommands.h"
 
 //function prototypes
 void mymkdir(const char *dname);

@@ -8,6 +8,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+#include "commands.h"
+
 #define MAX 256
 
 // Define variables
@@ -16,6 +18,20 @@ struct sockaddr_in  server_addr;
 
 int sock, r;
 int SERVER_IP, SERVER_PORT; 
+
+/* Command table for easy user command lookup. For example, if the user inputs
+    mkdir folderName
+then when the input gets split up into the command and argument, command
+will be
+    mkdir
+and in order to determine what function to call, you simply loop through
+inputTable until you find an index that matches mkdir, then you call
+the corresponding function in functTable at that same index */
+typedef int (*funct)(char *);
+funct functTable[] = {lcat, lpwd, lls, lcd, lmkdir, lrmdir, lrm, quit,
+    rpwd, rcd, rmkdir, rrmdir, rrm, get, put, rls};
+char *inputTable[] = {"lcat", "lpwd", "lls", "lcd", "lmkdir", "lrmdir",
+    "lrm", "quit", "pwd", "cd", "mkdir", "rmdir", "rm", "get", "put", "ls"};
 
 // clinet initialization code
 
