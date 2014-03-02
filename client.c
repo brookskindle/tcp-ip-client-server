@@ -89,6 +89,7 @@ main(int argc, char *argv[ ])
 	char* someTok = strtok(line, " ");
 	// line should be the command
 	
+	
 	if(someTok == NULL)
 		printf("error Tokenizing");	
 	else if ( (strcmp( someTok, "lls") == 0) ||
@@ -124,7 +125,7 @@ main(int argc, char *argv[ ])
 /*
 	example of GET on client side
 	
-	if( strcmp(someTok, get))
+	if( someTok, get)==0 )
 	{
 		 n = write(sock, line, MAX);
 		 printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
@@ -150,6 +151,7 @@ main(int argc, char *argv[ ])
 		 	}else
 		 	{
 		 		int fid = open(filename, O_WRONLY | O_CREAT);
+		 		int count = 0;
 		 		while( count < ans) 
 		 		{
 		 			n = read(socket,buf, MAX);
@@ -167,5 +169,38 @@ main(int argc, char *argv[ ])
 
 /*
 	example of 'put' 
+	
+	format of put:    put [filename] [size]
+	
+	
+	
+	if( strcmp(someTok, "put") == 0)
+	{
+		n = write(sock, line, MAX);
+		printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
+			
+		//do not need to check if command is good, just write info  to socket??
+		
+		char* filename =  strtok(NULL, " "); 
+		if(filename == NULL)
+			printf("invalid file name");
+		else
+		{
+			fid =  open(filename, O_RONLY);
+			if( fid == -1)
+			{
+				printf("error opening file");
+			}else
+			{
+
+				char buf[MAX];
+				while(n=read(fd, buf, MAX))
+				{
+					n = write(newsock, buf, MAX); 
+				}
+			}
+		}
+						 		
+	}	
 */
 

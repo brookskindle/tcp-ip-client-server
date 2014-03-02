@@ -185,4 +185,39 @@ main(int argc, char *argv[])
 
 */
 
+
+/*
+	example of 'put' server side
+	//cmd be put 
+	
+	char *filename = strtok(NULL," ");
+	
+	if (filename == NULL)
+	{
+		printf("invalid file name");
+	}else
+	{
+		
+		char * cSIZE = (strtok(NULL, " ");
+		
+		if(cSize == NULL)
+			printf("invalid size");
+		else
+		{
+			int size =  atoi(cSize);
+			int fid = open(filename, O_WRONLY | O_CREAT, 0644);
+			
+			int count = 0;
+	 		while( count < size) 
+	 		{
+	 			n = read(socket,buf, MAX);
+	 			count += n;
+	 			write(fid, n, MAX);
+	 		}
+	 		close(fid);
+		}
+		
+	}
+*/
+
 			
