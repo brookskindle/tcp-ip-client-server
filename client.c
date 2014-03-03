@@ -84,8 +84,9 @@ int client_init(char *argv[])
 
 int main(int argc, char *argv[ ])
 {
-  int n;
+  int n, i;
   char line[MAX], ans[MAX];
+  char *someTok = NULL;
 
   if (argc < 3){
      printf("Usage : client ServerName SeverPort\n");
@@ -106,8 +107,15 @@ int main(int argc, char *argv[ ])
 
     // Catch for local commands should be here.
     
-	char* someTok = strtok(line, " ");
-	// line should be the command
+	someTok = strtok(line, " ");
+	//loop through command table to see if the user entered a valid command
+    for(i = 0; i < sizeof(functTable) / sizeof(funct); i++) {
+        if(!strcmp(someTok, inputTable[i])) { //command match
+            //call appropriate function with command arguments
+            printf("function arguments: %s\n", line +strlen(someTok)+1);
+            functTable[i](line + strlen(someTok) + 1);
+        }
+    }//end for
 	
 	if(someTok == NULL)
 		printf("error Tokenizing");	
