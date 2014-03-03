@@ -6,7 +6,7 @@
 CC=gcc
 CLIENTEXE=client #name of client executable
 SERVEREXE=server #name of server executable
-#CFLAGS=-m32
+CFLAGS=-m32
 
 #debug: CFLAGS += -ggdb
 debug: all

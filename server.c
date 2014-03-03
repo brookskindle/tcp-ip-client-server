@@ -125,7 +125,7 @@ main(int argc, char *argv[])
       n = write(newsock, line, MAX);
 */
 
-	char * cmd  = strok(line, " ");
+	char * cmd  = strtok(line, " ");
 	
 	if(cmd == NULL)
 		printf("invalid command");
