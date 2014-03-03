@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <netdb.h>
 
 #include "commands.h"
@@ -46,7 +49,7 @@ int client_init(char *argv[])
      exit(1);
   }
 
-  SERVER_IP   = *(long *)hp->h_addr;
+  SERVER_IP   = *(long *)hp->h_addr_list[0];
   SERVER_PORT = atoi(argv[2]);
 
   printf("2 : create a TCP socket\n");
@@ -72,13 +75,14 @@ int client_init(char *argv[])
   printf("5 : connected OK to \007\n"); 
   printf("---------------------------------------------------------\n");
   printf("hostname=%s  IP=%s  PORT=%d\n", 
-          hp->h_name, inet_ntoa(SERVER_IP), SERVER_PORT);
+          hp->h_name, inet_ntoa(*(struct in_addr *)&SERVER_IP), SERVER_PORT);
   printf("---------------------------------------------------------\n");
 
   printf("========= init done ==========\n");
+  return 0;
 }
 
-main(int argc, char *argv[ ])
+int main(int argc, char *argv[ ])
 {
   int n;
   char line[MAX], ans[MAX];
@@ -135,7 +139,8 @@ main(int argc, char *argv[ ])
 	
     	
     }
-}
+    return 0;
+}//end main
 
 /*
 	example of GET on client side
