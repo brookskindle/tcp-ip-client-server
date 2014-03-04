@@ -15,16 +15,25 @@
 #include <unistd.h> //for rmdir, unlink
 #include <time.h> //for ctime
 #include <stdio.h> //for fopen
-#include "localCommands.h"
-#include "remoteCommands.h"
+
+#define MAX 256 //max line length
 
 //function prototypes
-void mymkdir(const char *dname);
-void myrmdir(const char *dname);
-void rm(const char *fname);
-void cat(const char *fname);
-void ls(const char *path);
-void lsFile(struct stat file, const char *fname);
-void lsDir(const char *dname);
+void execRemote(int sock, char line[MAX]);
+
+void mymkdir(int fd, char *dname);
+void myrmdir(int fd, char *dname);
+void rm(int fd, char *fname);
+void cat(int fd, char *fname);
+void ls(int fd, char *path);
+void pwd(int fd, char *path);
+void cd(int fd, char *path);
+void get(int fd, char *path);
+void put(int fd, char *path);
+void quit(int fd, char *path);
+
+//helpers
+void lsFile(int fd, struct stat file, const char *fname);
+void lsDir(int fd, const char *dname);
 
 #endif

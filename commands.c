@@ -6,27 +6,37 @@
  */
 
 #include "commands.h"
+#include <stdlib.h>
+
+
+/* sends a string command to a socket */
+void execRemote(int sock, char line[MAX]) {
+    char ans[MAX] = {0};
+    // Send ENTIRE line to server
+    int n = write(sock, line, MAX);
+    printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
+}//end execRemote
 
 /* makes a directory */
-void mymkdir(const char *dname) {
+void mymkdir(int fd, char *dname) {
     mkdir(dname, 0775);
 }//end mymkdir
 
 
 /* removes a directory */
-void myrmdir(const char *dname) {
+void myrmdir(int fd, char *dname) {
     rmdir(dname);
 }//end myrmdir
 
 
 /* removes a file */
-void rm(const char *fname) {
+void rm(int fd, char *fname) {
     unlink(fname);
 }//end rm
 
 
 /* prints file contents */
-void cat(const char *fname) {
+void cat(int fd, char *fname) {
     FILE *f = fopen(fname, "r");
     char ch;
     if(f) { //file opened
@@ -42,17 +52,17 @@ void cat(const char *fname) {
 
 /* Prints the directory or file in long format. If an invalid path is inputted,
    NULL or just a path that does not exist), nothing will happen */
-void ls(const char *path) {
+void ls(int fd, char *path) {
     int i = 0;
     struct stat file;
     if(path) { //ls the (non-null) path
         i = stat(path, &file);
         if(!i) { //success statting path
             if((file.st_mode & 0100000) == 0100000) { //reg file(1000) or lnk(1010)
-                lsFile(file, path);
+                lsFile(fd, file, path);
             }
             else if((file.st_mode & 0040000) == 0040000) { //dir(0100)
-                lsDir(path);
+                lsDir(fd, path);
             }
         }
         else { //unable to stat path
@@ -61,8 +71,39 @@ void ls(const char *path) {
 }//end ls
 
 
+/* prints the current working directory to the file descriptor */
+void pwd(int fd, char *path) {
+    //TODO: Finish this function
+}//end pwd
+
+
+/* changes directory to the given directory and writes any output to the given 
+file descriptor */
+void cd(int fd, char *path) {
+    //TODO: cd
+}//end cd
+
+
+/* gets a file from a remote server */
+void get(int fd, char *path) {
+    //TODO: get
+}//end get
+
+
+/* uploads a file to the server */
+void put(int fd, char *path) {
+    //TODO: put
+}//end put
+
+
+/* quits the program */
+void quit(int fd, char *path) {
+    exit(0);
+}//end quit
+
+
 /* ls a file in long format (can be directory, lkn, file, or etc...) */
-void lsFile(struct stat file, const char *fname) {
+void lsFile(int fd, struct stat file, const char *fname) {
     int i;
     char tmpname[strlen(fname) + 1];
     strcpy(tmpname, fname);
@@ -93,7 +134,7 @@ void lsFile(struct stat file, const char *fname) {
             printf("-");
         }
     }//end for
-    printf(" %2d ", file.st_nlink); //number of hard links
+    printf(" %2d ", (int) file.st_nlink); //number of hard links
     printf("%d %d", file.st_uid, file.st_gid); //uid and gid
     printf(" %ld ", file.st_size); //size on disk
     printf("%s", ctime(&file.st_mtime)); //time of last modification
@@ -103,7 +144,7 @@ void lsFile(struct stat file, const char *fname) {
 
 /* ls on a directory, which prints all directory contents in long format. If
    the given string is not a directory, nothing will happen */
-void lsDir(const char *dname) {
+void lsDir(int fd, const char *dname) {
     char filename[256] = {'\0'};
     struct stat fstat;
     DIR *dp = opendir(dname); //open directory
@@ -117,7 +158,7 @@ void lsDir(const char *dname) {
             strcat(filename, "/");
             strcat(filename, ep->d_name);
             stat(filename, &fstat);
-            lsFile(fstat, filename);
+            lsFile(fd, fstat, filename);
         }
         ep = readdir(dp); //read next file
     }//end while
