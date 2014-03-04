@@ -6,22 +6,21 @@
 CC=gcc
 CLIENTEXE=client #name of client executable
 SERVEREXE=server #name of server executable
-#CFLAGS=-m32
+CFLAGS=-m32
 
-#debug: CFLAGS += -ggdb
+debug: CFLAGS += -ggdb
 debug: all
 
 all: client server
 
-client: client.c commands.o remoteCommands.o localCommands.o
-	$(CC) client.c commands.o remoteCommands.o localCommands.o $(CFLAGS) -o $(CLIENTEXE)
+client: client.c commands.o
+	$(CC) client.c commands.o $(CFLAGS) -o $(CLIENTEXE)
 
-server: server.c commands.o remoteCommands.o localCommands.o
+server: server.c commands.o 
 	$(CC) server.c $(CFLAGS) -o $(SERVEREXE)
 
-commands.o: commands.h commands.c localCommands.h localCommands.c\
-remoteCommands.h remoteCommands.c
-	$(CC) -c commands.c remoteCommands.c localCommands.c $(CFLAGS)
+commands.o: commands.h commands.c 
+	$(CC) -c commands.c $(CFLAGS)
 
 clean:
 	rm -rf *.o $(CLIENTEXE) $(SERVEREXE)
