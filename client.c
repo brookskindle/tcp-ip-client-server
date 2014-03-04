@@ -194,9 +194,6 @@ close(fid);
    example of 'put' 
 
    format of put:    put [filename] [size]
-
-
-
    if( strcmp(someTok, "put") == 0)
    {
    n = write(sock, line, MAX);

@@ -6,6 +6,8 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+#include "commands.h"
+
 #define  MAX 256
 
 // Define variables:
@@ -129,12 +131,21 @@ main(int argc, char *argv[])
 	
 	if(cmd == NULL)
 		printf("invalid command");
-
+	else
+	{
+		//execute the command 
+		// might need seperate functions for server side of unix commands		
+		
+	}
       printf("server: wrote n=%d bytes; ECHO=[%s]\n", n, line);
       printf("server: ready for next request\n");
     }
  }
 }
+
+
+
+
 
 
 /*

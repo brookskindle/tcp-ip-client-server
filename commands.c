@@ -5,6 +5,13 @@
    commands.c  -   source file for prelab commands
  */
 
+
+/*
+	Looking over the list and possible implementations of this commands, the server and clients may need there own versions of the commands.
+	
+*/
+
+
 #include "commands.h"
 #include <stdlib.h>
 
@@ -163,3 +170,9 @@ void lsDir(int fd, const char *dname) {
         ep = readdir(dp); //read next file
     }//end while
 }//end lsDir
+
+
+
+
+
+
