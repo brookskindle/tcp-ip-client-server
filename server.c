@@ -133,6 +133,7 @@ main(int argc, char *argv[])
 		printf("invalid command");
 	else
 	{
+		
 		//execute the command 
 		// might need seperate functions for server side of unix commands		
 		

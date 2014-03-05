@@ -32,6 +32,15 @@ void get(int fd, char *path);
 void put(int fd, char *path);
 void quit(int fd, char *path);
 
+
+void putC(int size, char *filename);
+void getC(int size, char *filename);
+
+
+void putS(int size, char *filename);
+void getS(int size, char *filename);
+
+
 //helpers
 void lsFile(int fd, struct stat file, const char *fname);
 void lsDir(int fd, const char *dname);
