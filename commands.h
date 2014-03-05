@@ -19,6 +19,7 @@
 #define MAX 256 //max line length
 
 //function prototypes
+void parseEnv(char *env[]);
 void execRemote(int sock, char line[MAX]);
 
 void mymkdir(int fd, char *dname);

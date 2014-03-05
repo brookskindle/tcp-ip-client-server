@@ -84,12 +84,13 @@ int client_init(char *argv[])
 
 
 //main -- program start point
-int main(int argc, char *argv[ ])
+int main(int argc, char *argv[], char *env[])
 {
     int n, i, found = 0;
     char line[MAX], ans[MAX];
     char *someTok = NULL;
 
+    parseEnv(env); //parse command line environments
     if (argc < 3){
         printf("Usage : client ServerName SeverPort\n");
         exit(1);
