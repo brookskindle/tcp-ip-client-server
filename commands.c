@@ -16,8 +16,8 @@
 #include <stdlib.h>
 
 //global env variables
-char home[256],
-     cwd[256];
+char home[MAX],
+     cwd[MAX];
 
 
 /* parses the command line environments of main */
@@ -117,7 +117,7 @@ void pwd(int fd, char *path) {
    file descriptor */
 void cd(int fd, char *path) {
     if(chdir(path) != -1) { //success changing directory
-        getcwd(cwd, sizeof(cwd) / sizeof(char));
+        getcwd(cwd, MAX);
     }
 }//end cd
 
@@ -309,7 +309,7 @@ void lsFile(int fd, struct stat file, const char *fname) {
 /* ls on a directory, which prints all directory contents in long format. If
    the given string is not a directory, nothing will happen */
 void lsDir(int fd, const char *dname) {
-    char filename[256] = {'\0'};
+    char filename[MAX] = {'\0'};
     struct stat fstat;
     DIR *dp = opendir(dname); //open directory
     struct dirent *ep = readdir(dp); //get next file in directory
