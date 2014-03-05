@@ -99,6 +99,10 @@ int main(int argc, char *argv[ ])
 
     printf("********  processing loop  *********\n");
     while (1){
+        printf("********************************************\n");
+        printf("pwd cd mkdir rmdir rm get put ls quit\n");
+        printf("lcat lpwd lls lcd lmkdir lrmdir lrm\n");
+        printf("********************************************\n");
         printf("input a line : ");
         bzero(line, MAX);                // zero out line[ ]
         fgets(line, MAX, stdin);         // get a line (end with \n) from stdin
