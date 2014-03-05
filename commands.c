@@ -48,6 +48,7 @@ void execRemote(int sock, char line[MAX]) {
 
 }//end execRemote
 
+
 /* makes a directory */
 void mymkdir(int fd, char *dname) {
     mkdir(dname, 0775);
@@ -253,9 +254,11 @@ void putS(int fd, char *path) {
      */
 }//end putS
 
+
 void getS(int fd, char *path){
 
 }//end getS
+
 
 /* quits the program */
 void quit(int fd, char *path) {
