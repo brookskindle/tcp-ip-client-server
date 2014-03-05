@@ -25,7 +25,6 @@ void parseEnv(char *env[]) {
     char *cur;
     int i = 0;
     for(i = 0, cur = env[i]; env[i]; i++) { //loop through env
-        printf("env[%d]: %s\n", i, env[i]);
         if(strstr(env[i], "HOME=") == env[i]) { //home path found
             sprintf(home, "%s", strstr(env[i], "=") + 1);
         }
@@ -82,14 +81,12 @@ void cat(int fd, char *fname) {
 }//end cat
 
 
-/* Prints the directory or file in long format. If an invalid path is inputted,
-   NULL or just a path that does not exist), nothing will happen */
+/* Prints the directory or file in long format. If an invalid path is inputted
+   (NULL or just a path that does not exist), nothing will happen */
 void ls(int fd, char *path) {
     int i = 0, n = 0;
     struct stat file;
-    printf("calling ls!!!!\n");
     path = strtok(NULL, " ");
-    printf("fd: %d, path: %s\n", fd, path);
     if(!path) { //no argument to ls, print cwd
         path = cwd;
     }
@@ -112,14 +109,16 @@ void ls(int fd, char *path) {
 
 /* prints the current working directory to the file descriptor */
 void pwd(int fd, char *path) {
-    //TODO: Finish this function
+    printf("%s\n", cwd);
 }//end pwd
 
 
 /* changes directory to the given directory and writes any output to the given 
    file descriptor */
 void cd(int fd, char *path) {
-    //TODO: cd
+    if(chdir(path) != -1) { //success changing directory
+        getcwd(cwd, sizeof(cwd) / sizeof(char));
+    }
 }//end cd
 
 
