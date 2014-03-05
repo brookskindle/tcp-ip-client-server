@@ -117,6 +117,10 @@ void pwd(int fd, char *path) {
 /* changes directory to the given directory and writes any output to the given 
    file descriptor */
 void cd(int fd, char *path) {
+    path = strtok(NULL, " "); //get cd arg
+    if(!path) { //no argument to cd, cd to home directory
+        path = home;
+    }
     if(chdir(path) != -1) { //success changing directory
         getcwd(cwd, MAX);
     }
