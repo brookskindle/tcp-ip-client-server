@@ -11,8 +11,7 @@
 
 //global env variables
 char home[MAX],
-     cwd[MAX],
-     buf[MAX];
+     cwd[MAX];
 
 
 /* parses the command line environments of main */
