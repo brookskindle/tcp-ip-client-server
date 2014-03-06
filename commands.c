@@ -67,19 +67,39 @@ void execRemote(int sock, char line[MAX]) {
 
 /* makes a directory */
 void mymkdir(int fd, char *dname) {
-    mkdir(dname, 0775);
+    if(!mkdir(dname, 0775)) { //success
+        sprintf(buf, "mkdir okay\nEND OF mkdir");
+    }
+    else { //failure
+        sprintf(buf, "mkdir failed\nEND OF mkdir");
+    }
+    write(fd, buf, MAX); //write line to file descriptor
 }//end mymkdir
 
 
 /* removes a directory */
 void myrmdir(int fd, char *dname) {
-    rmdir(dname);
+    if(!rmdir(dname)) { //success
+        sprintf(buf, "rmdir okay\n");
+    }
+    else { //failure
+        sprintf(buf, "rmdir failed\n");
+    }
+    strcat(buf, "END OF rmdir");
+    write(fd, buf, MAX); //write line to file descriptor
 }//end myrmdir
 
 
 /* removes a file */
 void rm(int fd, char *fname) {
-    unlink(fname);
+    if(!unlink(fname)) { //success
+        sprintf(buf, "rm okay\n");
+    }
+    else { //failure
+        sprintf(buf, "rm failed\n");
+    }
+    strcat(buf, "END OF rm");
+    write(fd, buf, MAX); //write line to file descriptor
 }//end rm
 
 
@@ -121,12 +141,15 @@ void ls(int fd, char *path) {
         }
         path = strtok(NULL, " ");
     }//end while
+    bzero(buf, MAX);
+    sprintf(buf, "END OF ls");
+    write(fd, buf, MAX);
 }//end ls
 
 
 /* prints the current working directory to the file descriptor */
 void pwd(int fd, char *path) {
-    sprintf(buf, "%s\n", cwd);
+    sprintf(buf, "%s\nEND OF pwd", cwd);
     write(fd, buf, MAX);
 }//end pwd
 
@@ -140,7 +163,12 @@ void cd(int fd, char *path) {
     }
     if(chdir(path) != -1) { //success changing directory
         getcwd(cwd, MAX);
+        sprintf(buf, "cd okay\nEND OF cd");
     }
+    else { //unsuccessful changing directories
+        sprintf(buf, "cd failed\nEND OF cd");
+    }
+    write(fd, buf, MAX); //write line to file descriptor
 }//end cd
 
 

@@ -2,15 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h> //for bzero
 
 #include <sys/socket.h>
 #include <netdb.h>
 
 #include "commands.h"
 
-funct cmdTable[] = {cat, pwd, ls, cd, mymkdir, myrmdir, rm, get, put};
-const char *const userInputs[] = {"cat", "pwd", "ls", "cd", "mkdir", "rmdir",
-    "rm", "get", "put"};
+funct cmdTable[] = {pwd, ls, cd, mymkdir, myrmdir, rm, get, put};
+const char *const userInputs[] = {"pwd", "ls", "cd", "mkdir", "rmdir",
+    "rm", "put", "get"};
 
 // Define variables:
 struct sockaddr_in  server_addr, client_addr, name_addr;
@@ -135,6 +136,7 @@ int main(int argc, char *argv[])
                     //call command with client fd(newsock)
                      printf("Calling %s with parameters(%d, %s)\n",
                              userInputs[i], newsock, line);
+                     bzero(buf, MAX);
                      cmdTable[i](newsock, line); 
                  }
              }//end for
