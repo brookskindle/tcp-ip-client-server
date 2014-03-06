@@ -20,15 +20,6 @@ struct sockaddr_in  server_addr;
 int sock, r;
 int SERVER_IP, SERVER_PORT; 
 
-/* Command table for easy user command lookup. For example, if the user inputs
-   mkdir folderName
-   then when the input gets split up into the command and argument, command
-   will be
-   mkdir
-   and in order to determine what function to call, you simply loop through
-   inputTable until you find an index that matches mkdir, then you call
-   the corresponding function in functTable at that same index */
-typedef void (*funct)(int, char *);
 
 funct localTable[] = {cat, pwd, ls, cd, mymkdir, myrmdir, rm, quit};
 const char *const localInputs[] = {"lcat", "lpwd", "lls", "lcd", "lmkdir", "lrmdir",

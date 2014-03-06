@@ -17,7 +17,7 @@ client: client.c commands.o
 	$(CC) client.c commands.o $(CFLAGS) -o $(CLIENTEXE)
 
 server: server.c commands.o 
-	$(CC) server.c $(CFLAGS) -o $(SERVEREXE)
+	$(CC) server.c commands.o $(CFLAGS) -o $(SERVEREXE)
 
 commands.o: commands.h commands.c 
 	$(CC) -c commands.c $(CFLAGS)

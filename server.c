@@ -8,7 +8,9 @@
 
 #include "commands.h"
 
-#define  MAX 256
+funct cmdTable[] = {cat, pwd, ls, cd, mymkdir, myrmdir, rm, get, put};
+const char *const userInputs[] = {"cat", "pwd", "ls", "cd", "mkdir", "rmdir",
+    "rm", "get", "put"};
 
 // Define variables:
 struct sockaddr_in  server_addr, client_addr, name_addr;
@@ -81,6 +83,8 @@ int main(int argc, char *argv[])
 {
     char *hostname;
     char line[MAX];
+    char * cmd;
+    int i = 0;
 
     if (argc < 2)
         hostname = "localhost";
@@ -121,123 +125,22 @@ int main(int argc, char *argv[])
             // show the line string
             printf("server: read  n=%d bytes; line=[%s]\n", n, line);
 
-            /*    
-            //Lines 122 - 125 should be replaced with the actual execution of command segment, then writing to the appropriate socket. 
-            strcat(line, " ECHO");
-            // send the echo line to client 
-            n = write(newsock, line, MAX);
+            /*
+                Now that we've gotten a client line, determine what
+                to do with it
              */
-
-            char * cmd  = strtok(line, " ");
-
-            if(cmd == NULL)
-                printf("invalid command");
-            else
-            {
-                //execute the command 
-                // might need seperate functions for server side of unix commands		
-
-            }
-
-
-
-
-
-
-
+             cmd = strtok(line, " "); //get client command
+             for(i = 0; i < sizeof(cmdTable) / sizeof(funct); i++) {
+                 if(!strcmp(cmd, userInputs[i])) { //command found
+                    //call command with client fd(newsock)
+                     printf("Calling %s with parameters(%d, %s)\n",
+                             userInputs[i], newsock, line);
+                     cmdTable[i](newsock, line); 
+                 }
+             }//end for
             printf("server: wrote n=%d bytes; ECHO=[%s]\n", n, line);
             printf("server: ready for next request\n");
         }
     }
     return 0;
-}
-
-
-
-
-
-
-/*
-   example of server side 'get'
-
-//cmd should contain 'get' if here
-
-char *filename = strtok(NULL," ");
-
-if (filename == NULL)
-{
-printf("invalid file name");
-}else
-{
-struct stat info;
-int c = stat(filename, &info);
-if(c == -1)
-{
-printf("file does not exist");
-n = write(newsock, "file does not exist", MAX); 
-//return or break??
-}else
-{
-// this might cause an error since info.st_size is not a char *????
-n = write(newsock, info.st_size, MAX);
-
-
-// start to write the file to the buffer
-int fid = open(filename, O_RONLY);
-if(fid != -1)
-{
-// I wonder if 'n' should be changed to a local variable for this segement
-char buf[MAX];
-while(n=read(fd, buf, MAX))
-{
-n = write(newsock, buf, MAX); 
-}
-
-close(fid);
-}else
-printf("error opening file");
-}
-
-}
-
-
-
-
- */
-
-
-/*
-   example of 'put' server side
-//cmd be put 
-
-char *filename = strtok(NULL," ");
-
-if (filename == NULL)
-{
-printf("invalid file name");
-}else
-{
-
-char * cSIZE = (strtok(NULL, " ");
-
-if(cSize == NULL)
-printf("invalid size");
-else
-{
-int size =  atoi(cSize);
-int fid = open(filename, O_WRONLY | O_CREAT, 0644);
-
-int count = 0;
-while( count < size) 
-{
-n = read(socket,buf, MAX);
-count += n;
-write(fid, n, MAX);
-}
-close(fid);
-}
-
-}
- */
-
-
+}//end main
