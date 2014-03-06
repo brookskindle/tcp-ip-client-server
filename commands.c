@@ -7,11 +7,8 @@
 
 #include "commands.h"
 #include <stdlib.h>
-<<<<<<< HEAD
 #include <fcntl.h>
-=======
 #include <strings.h>
->>>>>>> 1191e1b3e3fae1207c6feb121a35a34983853df0
 
 //global env variables
 char home[MAX],
@@ -191,7 +188,7 @@ void put(int socket, char *filename) {
 		n = write(socket, buf, MAX);
 		 
 		//then send file 
-		while(n=read(fid, buf, MAX))
+		while((n=read(fid, buf, MAX)))
 		{
 			n = write(socket, buf, MAX); 
 		}//end while
