@@ -43,24 +43,24 @@ void execRemote(int sock, char line[MAX]) {
 	char *filename = strtok(NULL, " ");
 	char buf[MAX];
 	
-, 	if( !strcmp(cmd, "get"){
-		get(socket, filename);
-	}else if( !strcmp(cmd, "put"){
-		put(socket, filename);
+ 	if( !strcmp(cmd, "get")) {
+		get(sock, filename);
+	}else if( !strcmp(cmd, "put")) {
+		put(sock, filename);
 	}else{
 		//read from buffer until check is met
 		char check[MAX] =  "END OF ";
-		check = strcat(check, cmd);
+		strcat(check, cmd);
 		n = 0;
 		
-		while (true)
+		while (1)
 		{
-			n = read(socket, buf, MAX);
-			write(socket, buf, MAX);
+			n = read(sock, buf, MAX);
+			write(1, buf, MAX);
 			if(strstr(check,  buf))
 			{
 				printf("reached end\n");
-				break;
+				return;
 			}//end if
 		}//end while
 		

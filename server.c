@@ -80,7 +80,7 @@ int server_init(char *name)
 
 
 //main  -- program entry point
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *env[])
 {
     char *hostname;
     char line[MAX];
@@ -110,6 +110,7 @@ int main(int argc, char *argv[])
         printf("        IP=%s  port=%d\n", inet_ntoa(client_addr.sin_addr.s_addr),
                 ntohs(client_addr.sin_port));
         printf("-----------------------------------------------\n");
+        parseEnv(env);
 
         // Processing loop
         while(1){
