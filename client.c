@@ -105,6 +105,7 @@ int main(int argc, char *argv[], char *env[])
         printf("lcat lpwd lls lcd lmkdir lrmdir lrm\n");
         printf("********************************************\n");
         printf("input a line : ");
+        bzero(buf, MAX);
         bzero(line, MAX);                // zero out line[ ]
         fgets(line, MAX, stdin);         // get a line (end with \n) from stdin
 

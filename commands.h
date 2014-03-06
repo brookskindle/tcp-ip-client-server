@@ -18,6 +18,8 @@
 
 #define MAX 256 //max line length
 
+char buf[MAX];
+
 //function prototypes
 void parseEnv(char *env[]);
 void execRemote(int sock, char line[MAX]);

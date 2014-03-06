@@ -5,16 +5,13 @@
    commands.c  -   source file for prelab commands
  */
 
-
-/*
-   Looking over the list and possible implementations of this commands, the server and clients may need there own versions of the commands. (only put and get may need their own versions);
-
- */
-
-
 #include "commands.h"
 #include <stdlib.h>
+<<<<<<< HEAD
 #include <fcntl.h>
+=======
+#include <strings.h>
+>>>>>>> 1191e1b3e3fae1207c6feb121a35a34983853df0
 
 //global env variables
 char home[MAX],
@@ -111,7 +108,8 @@ void ls(int fd, char *path) {
 
 /* prints the current working directory to the file descriptor */
 void pwd(int fd, char *path) {
-    printf("%s\n", cwd);
+    sprintf(buf, "%s\n", cwd);
+    write(fd, buf, MAX);
 }//end pwd
 
 
@@ -217,40 +215,44 @@ void lsFile(int fd, struct stat file, const char *fname) {
     char tmpname[strlen(fname) + 1];
     char *time = 0;
     strcpy(tmpname, fname);
+
+    bzero(buf, MAX); //zero out buf so we don't get previous results
     if((file.st_mode & 0100000) == 0100000) { //reg file
-        printf("-");
+        sprintf(buf, "-");
     }
     else if((file.st_mode & 0040000) == 0040000) { //directory
-        printf("d");
+        sprintf(buf, "d");
     }
     else { //symbolic link
-        printf("l");
+        sprintf(buf, "l");
     }
     for(i = 8; i >= 0; i--) { //print file permissions
         if(file.st_mode & (1 << i)) { //has permission
             switch(i % 3) { //determine read, write, or execute
                 case 2: //read
-                    printf("r");
+                    strcat(buf, "r");
                     break;
                 case 1: //write
-                    printf("w");
+                    strcat(buf, "w");
                     break;
                 case 0: //execute
-                    printf("x");
+                    strcat(buf, "x");
                     break;
             }//end switch
         }
         else { //doesn't have permission
-            printf("-");
+            strcat(buf, "-");
         }
     }//end for
-    printf(" %2d ", (int) file.st_nlink); //number of hard links
-    printf("%d %d", file.st_uid, file.st_gid); //uid and gid
-    printf(" %ld ", file.st_size); //size on disk
+    sprintf(buf+strlen(buf), " %2d ", (int) file.st_nlink); //number of hard links
+    sprintf(buf+strlen(buf), "%d %d", file.st_uid, file.st_gid); //uid and gid
+    sprintf(buf+strlen(buf), " %ld ", file.st_size); //size on disk
     time = ctime(&file.st_mtime);
     time[strlen(time)-1] = '\0'; //remove newline
-    printf("%s ", time); //time of last modification
-    printf("%s\n", basename(tmpname)); //filename
+    sprintf(buf+strlen(buf), "%s ", time); //time of last modification
+    sprintf(buf+strlen(buf), "%s\n", basename(tmpname)); //filename
+
+    write(fd, buf, MAX);
 }//end lsFile
 
 
