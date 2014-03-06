@@ -14,6 +14,7 @@
 
 #include "commands.h"
 #include <stdlib.h>
+#include <fcntl.h>
 
 //global env variables
 char home[MAX],
@@ -128,140 +129,80 @@ void cd(int fd, char *path) {
 
 
 /* gets a file from a remote server */
-void get(int fd, char *path) {
+void get(int socket, char *filename) {
     //TODO: get
 
-    /*
-       I assume this is the client version of 'get' while, for it is difficult not to keep both version seperate
-     */
-    /*
+    
        char ans[MAX];
        char buf[MAX];
-       n = write(sock, path, MAX);
-       printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
-
+		int n;
 
        n = read(socket, ans, MAX);
-       printf("client: read  n=%d bytes; echo=(%s)\n",n, ans);
+       int size = atoi(ans);
 
-       if( ans == -1) 
+       if( size == -1) 
        {
-       printf("Server has returned an error\n");
-       return;
+       		printf("An error has occured\n");
+       		return;
 
        }else
        {
-    //command is good
-    // this means 'ans' should contain the size of the file to be read in
+		 int count = 0 ;
+		if( filename == NULL)
+		{
+			printf(" invalid file name");
+		}else
+		{
+			int fid = open(filename, O_WRONLY | O_CREAT| O_TRUNC);
+			int count = 0;
+			while( count < size) 
+			{
+				n = read(socket,buf, MAX);
+				count += n;
+				write(fid, buf, MAX);
+			}//end while
+			close(fid);
 
-    count = 0 ;
-    char* filename = strtok(path, " ");
-    if( filename == NULL)
-    {
-    printf(" invalid file name");
-    }else
-    {
-    int fid = open(filename, O_WRONLY | O_CREAT);
-    int count = 0;
-    while( count < ans) 
-    {
-
-    //Socket may need to be globalized
-    n = read(socket,buf, MAX);
-    count += n;
-    write(fid, n, MAX);
-    }//end while
-    close(fid);
-
-    }//end if else
+		}//end if else
     }//end if else
 
-     */
+    
 }//end get
 
 
 /* uploads a file to the server */
-void put(int fd, char *path) {
+void put(int socket, char *filename) {
     //TODO: put *assuming this is the client side of put
-
-    /*
-       n = write(socket, path, MAX);
-       printf("client: wrote n=%d bytes; line=(%s)\n", n, line);
-
-    //do not need to check if command is good, just write info  to socket??
-
-    char* filename =  strtok(path, " "); 
-    if(filename == NULL)
-    printf("invalid file name");
-    else
-    {
-    fid =  open(filename, O_RONLY);
+	char buf[MAX];
+	int n;
+    
+    int fid =  open(filename, O_RDONLY);
     if( fid == -1)
     {
-    printf("error opening file");
+    	printf("error opening file");
+    	sprintf(buf,"%d", fid);
+    	n = write(socket, buf, MAX);
+    	
     }else
     {
-
-    char buf[MAX];
-    while(n=read(fd, buf, MAX))
-    {
-    n = write(socket, buf, MAX); 
-    }//end while
+    	//send size
+		struct stat info;
+		int x = stat(filename, &info);
+		int size = info.st_size;
+		sprintf(buf, "%d", size);
+		n = write(socket, buf, MAX);
+		 
+		//then send file 
+		while(n=read(fid, buf, MAX))
+		{
+			n = write(socket, buf, MAX); 
+		}//end while
     }//end if else
-    }//end if else
 
 
-     */
+     
 }//end put
 
-
-void putS(int fd, char *path) {
-    /*
-       char *filename = strtok(path," ");
-       int n = 0;
-
-       if (filename == NULL)
-       {
-       printf("invalid file name");
-       }else
-       {
-       struct stat info;
-       int c = stat(filename, &info);
-       if(c == -1)
-       {
-       printf("file does not exist");
-       n = write(socket, "file does not exist", MAX); 
-    //return or break??
-    }else
-    {
-    // this might cause an error since info.st_size is not a char *????
-    n = write(socket, info.st_size, MAX);
-
-
-    // start to write the file to the buffer
-    int fid = open(filename, O_RDONLY);
-    if(fid != -1)
-    {
-    // I wonder if 'n' should be changed to a local variable for this segement
-    char buf[MAX];
-    while(n=read(fd, buf, MAX))
-    {
-    n = write(newsock, buf, MAX); 
-    }//end while
-
-    close(fid);
-    }else
-    printf("error opening file");
-    }//end if else
-
-    }//end if else
-     */
-}//end putS
-
-
-void getS(int fd, char *path){
-
-}//end getS
 
 
 /* quits the program */
