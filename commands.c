@@ -39,7 +39,28 @@ void execRemote(int sock, char line[MAX]) {
 
 
     // the client then should read from socket to get results of the remote command if it returns anything. 
-
+	char *cmd = strtok(line, " ");
+	char *filename = strtok(NULL, " ");
+	char buf[MAX];
+	
+, 	if( !strcmp(cmd, "get"){
+		get(socket, filename);
+	}else if( !strcmp(cmd, "put"){
+		put(socket, filename);
+	}else{
+		//read from buffer until check is met
+		char check[MAX] =  "END OF ";
+		check = strcat(check, cmd);
+		
+		n = read(socket, buf, MAX);
+		
+		
+		//compare with check, if [true] then break, else keep reading
+		
+		
+	}//end if else chain
+	
+	
 
 }//end execRemote
 

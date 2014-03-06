@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 {
     char *hostname;
     char line[MAX];
-    char * cmd;
+    char *cmd;
     int i = 0;
 
     if (argc < 2)
