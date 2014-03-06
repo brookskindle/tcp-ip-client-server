@@ -51,12 +51,18 @@ void execRemote(int sock, char line[MAX]) {
 		//read from buffer until check is met
 		char check[MAX] =  "END OF ";
 		check = strcat(check, cmd);
+		n = 0;
 		
-		n = read(socket, buf, MAX);
-		
-		
-		//compare with check, if [true] then break, else keep reading
-		
+		while (true)
+		{
+			n = read(socket, buf, MAX);
+			write(socket, buf, MAX);
+			if(strstr(check,  buf))
+			{
+				printf("reached end\n");
+				break;
+			}//end if
+		}//end while
 		
 	}//end if else chain
 	
