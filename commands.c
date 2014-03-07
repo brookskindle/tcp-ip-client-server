@@ -51,13 +51,15 @@ void execRemote(int sock, char line[MAX]) {
 		//read from buffer until check is met
 		char check[MAX] =  "END OF ";
 		strcat(check, cmd);
+        printf("CHECKING FOR STRING: %s", check);
 		n = 0;
 		
 		while (1)
 		{
 			n = read(sock, buf, MAX);
 			write(1, buf, MAX);
-			if(strstr(check,  buf))
+            printf("\n");
+			if(strstr(buf, check))
 			{
 				printf("reached end\n");
 				return;
@@ -155,7 +157,7 @@ void ls(int fd, char *path) {
 
 /* prints the current working directory to the file descriptor */
 void pwd(int fd, char *path) {
-    sprintf(buf, "%s\nEND OF pwd", cwd);
+    sprintf(buf, "%s END OF pwd", cwd);
     write(fd, buf, MAX);
 }//end pwd
 
@@ -169,10 +171,10 @@ void cd(int fd, char *path) {
     }
     if(chdir(path) != -1) { //success changing directory
         getcwd(cwd, MAX);
-        sprintf(buf, "cd okay\nEND OF cd");
+        sprintf(buf, "cd okay END OF cd");
     }
     else { //unsuccessful changing directories
-        sprintf(buf, "cd failed\nEND OF cd");
+        sprintf(buf, "cd failed END OF cd");
     }
     write(fd, buf, MAX); //write line to file descriptor
 }//end cd

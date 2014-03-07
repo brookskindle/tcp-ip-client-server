@@ -134,11 +134,21 @@ int main(int argc, char *argv[], char *env[])
              cmd = strtok(line, " "); //get client command
              for(i = 0; i < sizeof(cmdTable) / sizeof(funct); i++) {
                  if(!strcmp(cmd, userInputs[i])) { //command found
-                    //call command with client fd(newsock)
-                     printf("Calling %s with parameters(%d, %s)\n",
-                             userInputs[i], newsock, line);
-                     bzero(buf, MAX);
-                     cmdTable[i](newsock, line); 
+                     if(!strcmp("get", cmd)) { //get command
+                         cmd = strtok(NULL, " ");
+                         cmdTable[i](newsock, cmd);
+                     }
+                     else if(!strcmp("put", cmd)) { //put command
+                         cmd = strtok(NULL, " ");
+                         cmdTable[i](newsock, cmd);
+                     }
+                     else { //some other command
+                        //call command with client fd(newsock)
+                         printf("Calling %s with parameters(%d, %s)\n",
+                                 userInputs[i], newsock, line);
+                         bzero(buf, MAX);
+                         cmdTable[i](newsock, line); 
+                     }
                  }
              }//end for
             printf("server: wrote n=%d bytes; ECHO=[%s]\n", n, line);
