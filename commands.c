@@ -200,7 +200,7 @@ void get(int socket, char *filename) {
 		int n;
 
        n = read(socket, ans, MAX);
-       int size = atoi(ans);
+       int size = atoi(ans); //get size of file
 
        if( size == -1) 
        {
@@ -215,14 +215,15 @@ void get(int socket, char *filename) {
 			printf(" invalid file name");
 		}else
 		{
-			int fid = open(filename, O_WRONLY | O_CREAT| O_TRUNC);
+			int fid = open(filename, O_WRONLY | O_CREAT| O_TRUNC, 0644);
 			int count = 0;
 			while( count < size) 
 			{
 				char buf[MAX];
 				n = read(socket,buf, MAX);
 				count += n;
-				write(fid, buf, MAX);
+                printf("bytes received: %d\n", count);
+                write(fid, buf, n); //only write the number of bytes we received
 			}//end while
 			close(fid);
 
@@ -258,7 +259,7 @@ void put(int socket, char *filename) {
 		//then send file 
 		while((n=read(fid, buf, MAX)))
 		{
-			n = write(socket, buf, MAX); 
+			n = write(socket, buf, n); //only write n bytes that we read from the file
 		}//end while
     }//end if else
 
