@@ -186,7 +186,7 @@ void get(int socket, char *filename) {
 
     
        char ans[MAX];
-       char buf[MAX];
+       //char buf[MAX];
 		int n;
 
        n = read(socket, ans, MAX);
@@ -194,7 +194,7 @@ void get(int socket, char *filename) {
 
        if( size == -1) 
        {
-       		printf("An error has occured\n");
+       		printf("Recieved -1 for size: An error has occured\n");
        		return;
 
        }else
@@ -209,6 +209,7 @@ void get(int socket, char *filename) {
 			int count = 0;
 			while( count < size) 
 			{
+				char buf[MAX];
 				n = read(socket,buf, MAX);
 				count += n;
 				write(fid, buf, MAX);
@@ -231,7 +232,7 @@ void put(int socket, char *filename) {
     int fid =  open(filename, O_RDONLY);
     if( fid == -1)
     {
-    	printf("error opening file");
+    	printf("Error opening file: Sending -1");
     	sprintf(buf,"%d", fid);
     	n = write(socket, buf, MAX);
     	
