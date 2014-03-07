@@ -75,6 +75,7 @@ void execRemote(int sock, char line[MAX]) {
 
 /* makes a directory */
 void mymkdir(int fd, char *dname) {
+    dname = strtok(NULL, " ");
     if(!mkdir(dname, 0775)) { //success
         sprintf(buf, "mkdir okay\nEND OF mkdir");
     }
@@ -87,6 +88,7 @@ void mymkdir(int fd, char *dname) {
 
 /* removes a directory */
 void myrmdir(int fd, char *dname) {
+    dname = strtok(NULL, " ");
     if(!rmdir(dname)) { //success
         sprintf(buf, "rmdir okay\n");
     }

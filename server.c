@@ -145,9 +145,9 @@ int main(int argc, char *argv[], char *env[])
                      else { //some other command
                         //call command with client fd(newsock)
                          printf("Calling %s with parameters(%d, %s)\n",
-                                 userInputs[i], newsock, line);
+                                 userInputs[i]+strlen(line)+1, newsock, line);
                          bzero(buf, MAX);
-                         cmdTable[i](newsock, line); 
+                         cmdTable[i](newsock, line + strlen(line) + 1); 
                      }
                  }
              }//end for
