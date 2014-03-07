@@ -51,17 +51,14 @@ void execRemote(int sock, char line[MAX]) {
 		//read from buffer until check is met
 		char check[MAX] =  "END OF ";
 		strcat(check, cmd);
-        printf("CHECKING FOR STRING: %s", check);
 		n = 0;
 		
 		while (1)
 		{
 			n = read(sock, buf, MAX);
 			write(1, buf, MAX);
-            printf("\n");
 			if(strstr(buf, check))
 			{
-				printf("reached end\n");
 				return;
 			}//end if
 		}//end while
@@ -181,10 +178,10 @@ void cd(int fd, char *path) {
     }
     if(chdir(path) != -1) { //success changing directory
         getcwd(cwd, MAX);
-        sprintf(buf, "cd okay END OF cd");
+        sprintf(buf, "cd okay\nEND OF cd");
     }
     else { //unsuccessful changing directories
-        sprintf(buf, "cd failed END OF cd");
+        sprintf(buf, "cd failed\nEND OF cd");
     }
     write(fd, buf, MAX); //write line to file descriptor
 }//end cd
@@ -222,7 +219,6 @@ void get(int socket, char *filename) {
 				char buf[MAX];
 				n = read(socket,buf, MAX);
 				count += n;
-                printf("bytes received: %d\n", count);
                 write(fid, buf, n); //only write the number of bytes we received
 			}//end while
 			close(fid);
