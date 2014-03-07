@@ -75,25 +75,28 @@ void execRemote(int sock, char line[MAX]) {
 
 /* makes a directory */
 void mymkdir(int fd, char *dname) {
-    dname = strtok(NULL, " ");
-    if(!mkdir(dname, 0775)) { //success
-        sprintf(buf, "mkdir okay\nEND OF mkdir");
+    while((dname = strtok(NULL, " "))) { //get every argument
+        if(!mkdir(dname, 0775)) { //success
+            sprintf(buf, "mkdir okay\n");
+        }
+        else { //failure
+            sprintf(buf, "mkdir failed\n");
+        }
     }
-    else { //failure
-        sprintf(buf, "mkdir failed\nEND OF mkdir");
-    }
+    strcat(buf, "END OF mkdir");
     write(fd, buf, MAX); //write line to file descriptor
 }//end mymkdir
 
 
 /* removes a directory */
 void myrmdir(int fd, char *dname) {
-    dname = strtok(NULL, " ");
-    if(!rmdir(dname)) { //success
-        sprintf(buf, "rmdir okay\n");
-    }
-    else { //failure
-        sprintf(buf, "rmdir failed\n");
+    while((dname = strtok(NULL, " ")) ) {
+        if(!rmdir(dname)) { //success
+            sprintf(buf, "rmdir okay\n");
+        }
+        else { //failure
+            sprintf(buf, "rmdir failed\n");
+        }
     }
     strcat(buf, "END OF rmdir");
     write(fd, buf, MAX); //write line to file descriptor
@@ -102,12 +105,14 @@ void myrmdir(int fd, char *dname) {
 
 /* removes a file */
 void rm(int fd, char *fname) {
-    if(!unlink(fname)) { //success
-        sprintf(buf, "rm okay\n");
-    }
-    else { //failure
-        sprintf(buf, "rm failed\n");
-    }
+    while((fname = strtok(NULL, " "))) { //get every argument
+        if(!unlink(fname)) { //success
+            sprintf(buf, "rm okay\n");
+        }
+        else { //failure
+            sprintf(buf, "rm failed\n");
+        }
+    } //end while
     strcat(buf, "END OF rm");
     write(fd, buf, MAX); //write line to file descriptor
 }//end rm
@@ -115,16 +120,19 @@ void rm(int fd, char *fname) {
 
 /* prints file contents */
 void cat(int fd, char *fname) {
-    FILE *f = fopen(fname, "r");
+    FILE *f = NULL;
     char ch;
-    if(f) { //file opened
-        ch = fgetc(f);
-        while(!feof(f)) {
-            putchar(ch); //write char
-            ch = fgetc(f); //get next char
-        }//end while
-        fclose(f);
-    }//end if
+    while((fname = strtok(NULL, " "))) { //get every argument
+        f = fopen(fname, "r");
+        if(f) { //file opened
+            ch = fgetc(f);
+            while(!feof(f)) {
+                putchar(ch); //write char
+                ch = fgetc(f); //get next char
+            }//end while
+            fclose(f);
+        }//end if
+    }//end while
 }//end cat
 
 
